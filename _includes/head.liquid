@@ -86,46 +86,7 @@
   <link rel="shortcut icon" href="{{ site.icon | prepend: '/assets/img/' | relative_url | bust_file_cache}}">
 {% endif %}
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url | bust_css_cache }}">
-<style type="text/css">
-  /* Site override: blue theme instead of pink/purple */
-  :root {
-    --global-theme-color: #0076df;
-    --global-hover-color: #0076df;
-    --global-code-bg-color: rgba(0, 118, 223, 0.05);
-  }
-  html[data-theme="dark"] {
-    --global-theme-color: #4da3ff;
-    --global-hover-color: #4da3ff;
-  }
-
-  /* Site override: Inter instead of Roboto */
-  html,
-  body {
-    font-family: Inter, system-ui, -apple-system, sans-serif !important;
-  }
-
-  /* Site override: smaller social icons (theme default is 4rem) */
-  .social .contact-icons {
-    font-size: 1.25rem !important;
-  }
-  .social .contact-icons a i,
-  .social .contact-icons a svg,
-  .social .contact-icons .svg-inline--fa {
-    font-size: 1.25rem !important;
-    width: 1.25rem !important;
-    height: 1.25rem !important;
-    vertical-align: middle;
-  }
-  .social .contact-icons a img,
-  .social .contact-icons a svg image {
-    width: 1.25rem !important;
-    height: 1.25rem !important;
-    margin-bottom: 0.25rem !important;
-  }
-  .navbar-brand.social {
-    font-size: 1.1rem !important;
-  }
-</style>
+<link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url | bust_file_cache }}">
 {% if page.layout == 'cv' and site.plugins contains 'al_folio_cv' and site.al_folio.features.cv.enabled != false %}
   <link rel="stylesheet" href="{{ '/assets/css/al-folio-cv.css' | relative_url | bust_file_cache }}">
 {% endif %}
