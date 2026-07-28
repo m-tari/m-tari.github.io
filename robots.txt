@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://m-tari.com/sitemap.xml
+Sitemap: https://www.m-tari.com/sitemap.xml
