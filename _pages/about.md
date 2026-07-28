@@ -2,7 +2,6 @@
 layout: about
 title: about
 permalink: /
-subtitle: Co-founder at <a href="https://www.phrasel.com/">Phrasel</a>
 
 profile:
   align: right
