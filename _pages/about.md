@@ -22,7 +22,7 @@ latest_posts:
   limit: 3
 ---
 
-I build software and AI products. Right now I'm co-founding [Phrasel](https://www.phrasel.com/), a SaaS platform for language learning and test preparation, where I lead technical development from architecture through deployment and scaling.
+I build software and AI products. Right now I'm building [Phrasel](https://www.phrasel.com/), a SaaS platform for language learning and test preparation, where I lead technical development from architecture through deployment and scaling.
 
 ### Timeline
 
