@@ -87,6 +87,23 @@
 {% endif %}
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url | bust_css_cache }}">
 <style type="text/css">
+  /* Site override: blue theme instead of pink/purple */
+  :root {
+    --global-theme-color: #0076df;
+    --global-hover-color: #0076df;
+    --global-code-bg-color: rgba(0, 118, 223, 0.05);
+  }
+  html[data-theme="dark"] {
+    --global-theme-color: #4da3ff;
+    --global-hover-color: #4da3ff;
+  }
+
+  /* Site override: Inter instead of Roboto */
+  html,
+  body {
+    font-family: Inter, system-ui, -apple-system, sans-serif !important;
+  }
+
   /* Site override: smaller social icons (theme default is 4rem) */
   .social .contact-icons {
     font-size: 1.25rem !important;
