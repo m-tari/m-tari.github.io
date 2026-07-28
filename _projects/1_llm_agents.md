@@ -1,7 +1,7 @@
 ---
 layout: page
 title: LLM agent experiments
-importance: 1
+importance: 2
 redirect: https://github.com/m-tari/llm-langchain-experiments
 ---
 

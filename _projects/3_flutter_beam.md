@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Flutter of a reconfiguring beam
-importance: 3
+importance: 4
 redirect: https://publications.polymtl.ca/5256/
 ---
 
