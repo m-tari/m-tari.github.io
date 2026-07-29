@@ -323,6 +323,8 @@ article .clearfix > h3 {
   margin: 0;
   align-self: start;
   min-height: 1px;
+  /* Nudge down to optically match title text (glyphs sit below the line box) */
+  padding-top: 0.45rem;
 }
 
 .project-media--empty {
