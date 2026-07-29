@@ -45,7 +45,7 @@ GET https://graph.microsoft.com/v1.0/teams/{team-id}/channels
 <span class="p">}</span>
 </code></pre></div></div> <p>Finally, I run two separate processes: one for the Celery Beat scheduler and one for the worker that executes the tasks.</p> <p>To start the scheduler:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>celery <span class="nt">-A</span> tasks beat <span class="nt">--loglevel</span><span class="o">=</span>INFO
 </code></pre></div></div> <p>and a Celery worker that simply executes the task on our desired time:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>celery <span class="nt">-A</span> tasks worker <span class="nt">--loglevel</span><span class="o">=</span>INFO
-</code></pre></div></div> <p>Once everything is running, triggering the task manually from the application successfully posts a message to the Microsoft Teams channel. It was a small but satisfying milestone seeing the bot deliver scheduled messages without any user interaction!</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2024-09-15-send-scheduled-messages-teams/teams-scheduled-message-480.webp 480w,/assets/img/2024-09-15-send-scheduled-messages-teams/teams-scheduled-message-800.webp 800w,/assets/img/2024-09-15-send-scheduled-messages-teams/teams-scheduled-message-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2024-09-15-send-scheduled-messages-teams/teams-scheduled-message.png" class="img-fluid" width="100%" height="auto" alt="Scheduled bot message posted in a Microsoft Teams channel" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> </div> </article> </div> </div> <script>
+</code></pre></div></div> <p>Once everything is running, triggering the task manually from the application successfully posts a message to the Microsoft Teams channel. It was a small but satisfying milestone seeing the bot deliver scheduled messages without any user interaction!</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2024-09-15-send-scheduled-messages-teams/teams-scheduled-message-480.webp 480w,/assets/img/2024-09-15-send-scheduled-messages-teams/teams-scheduled-message-800.webp 800w,/assets/img/2024-09-15-send-scheduled-messages-teams/teams-scheduled-message-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2024-09-15-send-scheduled-messages-teams/teams-scheduled-message.png" class="img-fluid" width="100%" height="auto" alt="Scheduled bot message posted in a Microsoft Teams channel" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/writing/2026/whisper-serving-benchmark/">Benchmarking Whisper serving for Phrasel</a> </li> </ul> </div> </div> <script>
   window.alFolio = {
     compatBootstrap: false
   };
@@ -77,7 +77,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/projects/";
           },
-        },{id: "post-send-scheduled-messages-from-a-bot-to-a-channel-in-microsoft-teams",
+        },{id: "post-benchmarking-whisper-serving-for-phrasel",
+        
+          title: "Benchmarking Whisper serving for Phrasel",
+        
+        description: "Comparing HF Transformers, faster-whisper, vLLM, SGLang, and TensorRT-LLM for concurrent speech transcription.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/writing/2026/whisper-serving-benchmark/";
+          
+        },
+      },{id: "post-send-scheduled-messages-from-a-bot-to-a-channel-in-microsoft-teams",
         
           title: "Send scheduled messages from a bot to a channel in Microsoft Teams",
         

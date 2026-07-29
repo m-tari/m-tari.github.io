@@ -1,0 +1,152 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta name="google-site-verification" content="PjffiKb0fCfXfHdnExxJzMZyIRvKM6GiaWm4XwwNqCI"> <meta http-equiv="Permissions-Policy" content="interest-cohort=()"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Benchmarking Whisper serving for Phrasel | Mohammad Tari </title> <meta name="author" content="Mohammad Tari"> <meta name="description" content="Comparing HF Transformers, faster-whisper, vLLM, SGLang, and TensorRT-LLM for concurrent speech transcription."> <meta name="keywords" content="Mohammad Tari, Phrasel, NLP, machine learning, AI, software engineering"> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 860px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.539.0/dist/umd/lucide.min.js" integrity="sha256-xpNVRC+5XNZAio+TpLjaoiZkJi41PR7tJsJEasdrHX8=" crossorigin="anonymous"></script> <script defer src="/assets/js/lucide-init.js?v=3a3190aeb973d908f48f57f8ccc888aa"></script> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> <link rel="stylesheet" href="/assets/css/site.css?v=ba60dc35b2ff30b5cbb1c18a51fc4328"> <link rel="canonical" href="https://www.m-tari.com/writing/2026/whisper-serving-benchmark/"> <script src="/assets/js/theme.js?v=7af685e2ba20b37fef545c97b8064050"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav sticky-bottom-footer"> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Mohammad Tari </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/writing/index.html">writing </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i data-lucide="search" aria-hidden="true"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i data-lucide="sun-moon" id="light-toggle-system" aria-hidden="true"></i> <i data-lucide="moon" id="light-toggle-dark" aria-hidden="true"></i> <i data-lucide="sun" id="light-toggle-light" aria-hidden="true"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Benchmarking Whisper serving for Phrasel</h1> <p class="post-meta"> 5 min read   ·   July 29, 2026 </p> <p class="post-tags"> <i class="fa-solid fa-calendar fa-sm"></i> 2026   ·   <i class="fa-solid fa-hashtag fa-sm"></i> whisper,   <i class="fa-solid fa-hashtag fa-sm"></i> speech,   <i class="fa-solid fa-hashtag fa-sm"></i> benchmarking,   <i class="fa-solid fa-hashtag fa-sm"></i> vllm,   <i class="fa-solid fa-hashtag fa-sm"></i> tensorrt,   <i class="fa-solid fa-hashtag fa-sm"></i> phrasel   ·   <i class="fa-solid fa-tag fa-sm"></i> writing </p> </header> <article class="post-content"> <div id="markdown-content"> <p>For <a href="https://www.phrasel.com/" rel="external nofollow noopener" target="_blank">Phrasel</a>, transcription is not a one-off script: learners speak, we need transcripts back quickly, and load is bursty. Running Whisper once on a GPU is easy. Serving it under concurrency, with predictable latency and acceptable quality, is a different problem.</p> <p>I wanted a clear answer for which stack to use, so I built <a href="https://github.com/m-tari/open-speech-serve" rel="external nofollow noopener" target="_blank">open-speech-serve</a>: a small harness that benchmarks the same Whisper model across several serving paths and reports throughput, latency, and WER side by side.</p> <h2 id="what-i-compared">What I compared</h2> <p>All cells use <code class="language-plaintext highlighter-rouge">openai/whisper-large-v3-turbo</code> in FP16 on a single NVIDIA RTX 6000 Ada, with the same LibriSpeech-style audio manifest, English transcription, and text normalization. Concurrency levels were 1, 8, and 32. Metrics are medians across three passes after warmup.</p> <p>The frameworks fall into two groups:</p> <ul> <li> <strong>In-process baselines:</strong> Hugging Face Transformers and faster-whisper. These run inside the client process with a serialized gate: concurrent arrivals are allowed, but only one call reaches inference at a time.</li> <li> <strong>Serving engines:</strong> vLLM, SGLang, and TensorRT-LLM behind Triton. These take concurrent HTTP/gRPC requests and can batch or schedule on the GPU.</li> </ul> <p>Serialized vs concurrent is an important distinction. With serialization, end-to-end latency is mostly queue wait and throughput stays flat. With concurrent serving, client queue wait drops near zero and throughput scales until the GPU saturates.</p> <p>I also added a streaming path that measures <strong>TTFS</strong> (time from client end-of-speech to the final transcript) over a WebSocket, which matters more for interactive product flows than pure offline batch RTF.</p> <h2 id="results">Results</h2> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-07-29-whisper-serving-benchmark/gpu_sweep-480.webp 480w,/assets/img/2026-07-29-whisper-serving-benchmark/gpu_sweep-800.webp 800w,/assets/img/2026-07-29-whisper-serving-benchmark/gpu_sweep-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-07-29-whisper-serving-benchmark/gpu_sweep.png" class="img-fluid" width="100%" height="auto" alt="GPU sweep comparing throughput, latency, RTF, and WER across Whisper serving frameworks" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> <p>On this hardware, concurrent throughput ranks:</p> <p><strong>TensorRT-LLM &gt; vLLM ≫ SGLang (at c1/c8) &gt; HF Transformers ≈ faster-whisper.</strong></p> <p>A few numbers that stood out:</p> <table> <thead> <tr> <th>framework</th> <th style="text-align: right">concurrency</th> <th style="text-align: right">throughput (× realtime)</th> <th style="text-align: right">e2e p95 (s)</th> <th style="text-align: right">WER</th> </tr> </thead> <tbody> <tr> <td>faster-whisper</td> <td style="text-align: right">8</td> <td style="text-align: right">28.5</td> <td style="text-align: right">3.719</td> <td style="text-align: right">0.023</td> </tr> <tr> <td>HF Transformers</td> <td style="text-align: right">8</td> <td style="text-align: right">32.7</td> <td style="text-align: right">2.648</td> <td style="text-align: right">0.021</td> </tr> <tr> <td>SGLang</td> <td style="text-align: right">8</td> <td style="text-align: right">68.4</td> <td style="text-align: right">1.288</td> <td style="text-align: right">0.021</td> </tr> <tr> <td>vLLM</td> <td style="text-align: right">8</td> <td style="text-align: right">242.4</td> <td style="text-align: right">0.446</td> <td style="text-align: right">0.021</td> </tr> <tr> <td>TensorRT-LLM</td> <td style="text-align: right">8</td> <td style="text-align: right">310.7</td> <td style="text-align: right">0.335</td> <td style="text-align: right">0.052</td> </tr> </tbody> </table> <p>In-process baselines stay around <strong>30× realtime</strong> no matter how many clients wait in line. Engineered servers climb into the <strong>250-310×</strong> range before saturating. SGLang at concurrency 32 is invalid on this sweep (the experimental Whisper path timed out and the server killed itself under load), so I treat c1/c8 as informative and discard c32.</p> <p>Quality is mostly aligned: HF, vLLM, and SGLang sit near <strong>2.1% WER</strong>, faster-whisper near <strong>2.3%</strong>. TensorRT-LLM is faster but lands around <strong>5.2% WER</strong> on this engine, likely due to different configuration settings.</p> <h2 id="what-i-took-away-for-phrasel">What I took away for Phrasel</h2> <ol> <li> <p><strong>Single-request RTF is not serving capacity.</strong> A fast in-process Whisper call can still collapse under concurrent product traffic because it processes each request individually rather than batching them together.</p> </li> <li> <p><strong>vLLM and TensorRT-LLM both look like solid serving options.</strong> On this box, vLLM reached ~250× realtime with WER matching the HF baseline, while TensorRT-LLM pushed higher throughput (~310×) with a higher WER on this engine/build. Both seem like good tools for the job.</p> </li> <li> <p><strong>SGLang’s Whisper support struggled with high concurrency in these tests.</strong> It’s suitable for experimentation but currently not robust enough for demanding production workloads.</p> </li> <li> <p><strong>Prioritize the metrics that reflect user experience.</strong> While offline throughput is crucial for handling large-scale batch jobs efficiently, the time-to-final-speech (TTFS) is much more relevant for interactive speaking exercises, where users are waiting for feedback in real time. By benchmarking both, the choices that are grounded in how responsive and natural the experience will feel to your end users, not just raw processing speed.</p> </li> </ol> <p>The full matrix, methodology, and reproduction steps live in the <a href="https://github.com/m-tari/open-speech-serve" rel="external nofollow noopener" target="_blank">open-speech-serve</a> repo. If you are choosing a Whisper backend for a product rather than a demo notebook, concurrent load and WER together are the comparison that matters.</p> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/writing/2024/send-scheduled-messages-teams/">Send scheduled messages from a bot to a channel in Microsoft Teams</a> </li> </ul> </div> </div> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-about",
+    title: "about",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-writing",
+          title: "writing",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/writing/index.html";
+          },
+        },{id: "nav-projects",
+          title: "projects",
+          description: "Selected projects spanning AI agents, research tooling, and computational fluid dynamics.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
+        },{id: "post-benchmarking-whisper-serving-for-phrasel",
+        
+          title: "Benchmarking Whisper serving for Phrasel",
+        
+        description: "Comparing HF Transformers, faster-whisper, vLLM, SGLang, and TensorRT-LLM for concurrent speech transcription.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/writing/2026/whisper-serving-benchmark/";
+          
+        },
+      },{id: "post-send-scheduled-messages-from-a-bot-to-a-channel-in-microsoft-teams",
+        
+          title: "Send scheduled messages from a bot to a channel in Microsoft Teams",
+        
+        description: "Using Celery and botframework-connector to post scheduled messages to Teams channels.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/writing/2024/send-scheduled-messages-teams/";
+          
+        },
+      },{id: "news-building-phrasel-https-www-phrasel-com-a-saas-platform-for-language-learning-and-test-preparation",
+          title: 'Building [Phrasel](https://www.phrasel.com/), a SaaS platform for language learning and test preparation.',
+          description: "",
+          section: "News",},{id: "projects-llm-agent-experiments",
+          title: 'LLM agent experiments',
+          description: "",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/1_llm_agents/";
+            },},{id: "projects-viresa",
+          title: 'Viresa',
+          description: "",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/2_viresa/";
+            },},{id: "projects-flutter-of-a-reconfiguring-beam",
+          title: 'Flutter of a reconfiguring beam',
+          description: "",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/3_flutter_beam/";
+            },},{id: "projects-1d-piston-spring-system",
+          title: '1D piston-spring system',
+          description: "",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/4_piston_spring/";
+            },},{id: "projects-open-speech-serve",
+          title: 'open-speech-serve',
+          description: "",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/5_open_speech_serve/";
+            },},{
+        id: 'social-email',
+        title: 'email',
+        section: 'Socials',
+        handler: () => {
+          window.open("mailto:%6D%6F%68%61%6D%6D%61%64.%74%61%72%69@%67%6D%61%69%6C.%63%6F%6D", "_blank");
+        },
+      },{
+        id: 'social-linkedin',
+        title: 'LinkedIn',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.linkedin.com/in/mohammadtari", "_blank");
+        },
+      },{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/m-tari", "_blank");
+        },
+      },{
+        id: 'social-x',
+        title: 'X',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://twitter.com/mtari_t", "_blank");
+        },
+      },{
+        id: 'social-rss',
+        title: 'RSS Feed',
+        section: 'Socials',
+        handler: () => {
+          window.open("/feed.xml", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> </body> </html>
