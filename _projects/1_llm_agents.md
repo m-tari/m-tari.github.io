@@ -2,6 +2,7 @@
 layout: page
 title: LLM agent experiments
 importance: 2
+img: /assets/img/projects/ai-agents.gif
 redirect: https://github.com/m-tari/llm-langchain-experiments
 ---
 

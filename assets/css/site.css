@@ -309,6 +309,95 @@ article .clearfix > h3 {
   font-size: 0.9375em;
 }
 
+/* Projects: image left, title + text right (top-aligned) */
+.project-entry {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 11.5rem) minmax(0, 1fr);
+  column-gap: 1.25rem;
+  align-items: start;
+  margin: 0 0 2.25rem;
+  width: 100%;
+}
+
+.project-media {
+  margin: 0;
+  align-self: start;
+  min-height: 1px;
+}
+
+.project-media--empty {
+  /* Reserves the left column when a project has no image */
+  width: 100%;
+}
+
+.project-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.3rem;
+}
+
+/* Three beams: one on top, two below (triangle), equal height */
+.project-media--triangle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem;
+  max-width: 11.5rem;
+}
+
+.project-media--triangle img {
+  width: auto;
+  height: 105px;
+  max-height: 105px;
+  object-fit: contain;
+  justify-self: center;
+}
+
+.project-media--triangle img:first-child {
+  grid-column: 1 / -1;
+}
+
+.project-body {
+  min-width: 0;
+  align-self: start;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.project-body > h3 {
+  margin-top: 0 !important;
+  padding-top: 0;
+  line-height: 1.25;
+}
+
+.project-body > :last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 575.98px) {
+  .project-entry {
+    grid-template-columns: 1fr;
+    row-gap: 0.75rem;
+  }
+
+  .project-body {
+    order: 1;
+  }
+
+  .project-media {
+    order: 2;
+    max-width: 9.5rem;
+  }
+
+  .project-media--triangle {
+    max-width: 9.5rem;
+  }
+
+  .project-media--empty {
+    display: none;
+  }
+}
+
 /* Stronger About section breaks before news / latest posts */
 .post article > h2 {
   margin-top: 3.25rem;

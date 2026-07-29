@@ -2,6 +2,7 @@
 layout: page
 title: 1D piston-spring system
 importance: 5
+img: /assets/img/projects/1d-piston-spring.png
 redirect: https://github.com/m-tari/piston_Problem
 ---
 

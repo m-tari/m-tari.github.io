@@ -2,6 +2,7 @@
 layout: page
 title: Viresa
 importance: 3
+img: /assets/img/projects/viresa.png
 redirect: https://github.com/m-tari/arxiv_interface
 ---
 
