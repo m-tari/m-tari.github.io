@@ -6,12 +6,16 @@
   --global-hover-color: #0076df;
   --global-code-bg-color: rgba(0, 118, 223, 0.05);
   --global-text-color: #181c31;
+  /* Meta/secondary text: theme grey (~#828) is weak on white and dark */
+  --global-text-color-light: #5a6170;
 }
 
 html[data-theme="dark"] {
   --global-theme-color: #4da3ff;
   --global-hover-color: #4da3ff;
   --global-text-color: #e4e5ef;
+  --global-text-color-light: #b4b8c5;
+  --global-code-bg-color: #2a2f3a;
 }
 
 /*
@@ -84,23 +88,39 @@ svg.lucide {
   vertical-align: middle;
 }
 
-.icon-sm,
-.icon-sm.lucide-icon,
-svg.lucide.icon-sm {
-  width: 0.875em;
-  height: 0.875em;
+/* Drop tag/category chrome; keep title + description + date/read time */
+.post-tags {
+  display: none !important;
 }
 
-/* Keep calendar/hash/tag icons level with post tag text */
-.post-tags a .lucide-icon,
-.post-tags a svg.lucide,
-.post-tags a .icon-sm {
-  display: inline-block;
-  width: 0.875em;
-  height: 0.875em;
-  vertical-align: -0.05em;
-  position: relative;
-  top: -0.05em;
+/* Quieter post meta (writing index + post headers) */
+.post-meta,
+.post-list .post-meta {
+  color: var(--global-text-color-light) !important;
+  font-size: 0.8125rem !important;
+  letter-spacing: 0.01em;
+  margin-top: 0.85rem;
+  margin-bottom: 0;
+}
+
+/* Writing index: more air between description and date/read-time */
+.post-list li > p:not(.post-meta) {
+  margin-bottom: 0.15rem;
+  color: var(--global-text-color);
+}
+
+.post-list li > h3 {
+  margin-bottom: 0.5rem;
+}
+
+/* Post pages: space date line away from title above and body below */
+.post-header .post-title {
+  margin-bottom: 0.35rem;
+}
+
+.post-header .post-meta {
+  margin-top: 0.85rem;
+  margin-bottom: 1.5rem;
 }
 
 #light-toggle .lucide-icon,
@@ -158,7 +178,145 @@ html[data-theme-setting="light"] #light-toggle-light {
   font-size: 1.1rem !important;
 }
 
+/*
+ * Social icons black (theme colors i::before only; Lucide replaces <i> with <svg>,
+ * so icons were inheriting link/theme blue instead).
+ */
+.social .contact-icons a,
+.social .contact-icons a i,
+.social .contact-icons a i::before,
+.social .contact-icons a svg,
+.social .contact-icons .lucide-icon,
+.navbar-brand.social a,
+.navbar-brand.social a i,
+.navbar-brand.social a i::before,
+.navbar-brand.social a svg,
+.navbar-brand.social .lucide-icon {
+  color: #000 !important;
+  stroke: currentColor;
+}
+
+.social .contact-icons a:hover,
+.navbar-brand.social a:hover {
+  opacity: 0.65;
+}
+
+html[data-theme="dark"] .social .contact-icons a,
+html[data-theme="dark"] .social .contact-icons a i,
+html[data-theme="dark"] .social .contact-icons a i::before,
+html[data-theme="dark"] .social .contact-icons a svg,
+html[data-theme="dark"] .social .contact-icons .lucide-icon,
+html[data-theme="dark"] .navbar-brand.social a,
+html[data-theme="dark"] .navbar-brand.social a i,
+html[data-theme="dark"] .navbar-brand.social a i::before,
+html[data-theme="dark"] .navbar-brand.social a svg,
+html[data-theme="dark"] .navbar-brand.social .lucide-icon {
+  color: #fff !important;
+}
+
 /* Unbold first name in about title */
 .post-title .font-weight-bold {
   font-weight: inherit;
+}
+
+/*
+ * Body links: subtle underline so links stay findable in dense prose
+ * (nav / news titles / social stay untouched).
+ */
+article .clearfix a,
+article .post-content a,
+.post-content a,
+#markdown-content a {
+  text-decoration: underline;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, var(--global-theme-color) 40%, transparent);
+}
+
+article .clearfix a:hover,
+article .post-content a:hover,
+.post-content a:hover,
+#markdown-content a:hover {
+  text-decoration-color: var(--global-theme-color);
+}
+
+/* Quieter Timeline heading + muted dates (body copy stays primary) */
+article .clearfix > h3 {
+  margin-top: 2.25rem;
+  margin-bottom: 0.85rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.3;
+  color: var(--global-text-color-light);
+}
+
+.timeline-date {
+  color: var(--global-text-color);
+  font-weight: 700;
+  font-size: 0.9375em;
+}
+
+/* Stronger About section breaks before news / latest posts */
+.post article > h2 {
+  margin-top: 3.25rem;
+  margin-bottom: 1rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--global-divider-color);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.3;
+  color: var(--global-text-color-light);
+}
+
+.post article > h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.post article > h2 a:hover {
+  color: var(--global-theme-color);
+}
+
+/* Code blocks: style the outer rouge wrapper only (nested .highlight also matched before → double bg) */
+article div.highlighter-rouge,
+.post div.highlighter-rouge,
+article figure.highlight,
+.post figure.highlight {
+  font-size: 0.9375em;
+  line-height: 1.55;
+  margin: 1.5rem 0;
+  border: 0;
+  border-radius: 0.5rem;
+  background-color: var(--global-code-bg-color) !important;
+  overflow-x: auto;
+}
+
+article div.highlighter-rouge .highlight,
+.post div.highlighter-rouge .highlight,
+article div.highlighter-rouge pre,
+.post div.highlighter-rouge pre,
+article figure.highlight pre,
+.post figure.highlight pre {
+  margin: 0 !important;
+  border: 0;
+  border-radius: 0;
+  background: transparent !important;
+}
+
+article div.highlighter-rouge pre,
+.post div.highlighter-rouge pre,
+article figure.highlight pre,
+.post figure.highlight pre {
+  padding: 1rem 1.15rem;
+}
+
+article :not(pre) > code,
+.post :not(pre) > code {
+  font-size: 0.9375em;
+  padding: 0.12em 0.35em;
+  border-radius: 0.25rem;
+  border: 0;
+  background-color: var(--global-code-bg-color);
 }
