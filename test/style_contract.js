@@ -37,7 +37,7 @@ if (!/^\s*-\s*al_math\s*$/m.test(config)) {
   failures.push("`_config.yml` plugins must include `al_math` when math features are enabled.");
 }
 
-for (const libraryKey of ["fontawesome", "academicons", "scholar-icons"]) {
+for (const libraryKey of ["academicons", "scholar-icons"]) {
   if (!new RegExp(`^\\s{2}${escapeRegExp(libraryKey)}:\\s*$`, "m").test(config)) {
     failures.push(`\`_config.yml\` must define \`third_party_libraries.${libraryKey}\` for al_icons runtime wiring.`);
     continue;
@@ -45,6 +45,12 @@ for (const libraryKey of ["fontawesome", "academicons", "scholar-icons"]) {
   if (!new RegExp(`^\\s{2}${escapeRegExp(libraryKey)}:[\\s\\S]*?^\\s{4}integrity:\\s*$[\\s\\S]*?^\\s{6}css:\\s*\"sha`, "m").test(config)) {
     failures.push(`\`_config.yml\` should define an SRI hash for \`third_party_libraries.${libraryKey}.integrity.css\`.`);
   }
+}
+
+if (!/^\s{2}lucide:\s*$/m.test(config)) {
+  failures.push("`_config.yml` must define `third_party_libraries.lucide` for Lucide icon runtime wiring.");
+} else if (!/^\s{2}lucide:[\s\S]*?^\s{4}integrity:\s*$[\s\S]*?^\s{6}js:\s*\"sha/m.test(config)) {
+  failures.push("`_config.yml` should define an SRI hash for `third_party_libraries.lucide.integrity.js`.");
 }
 
 for (const libraryKey of ["tikzjax", "tocbot"]) {

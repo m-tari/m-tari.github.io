@@ -276,7 +276,7 @@ Understanding al-folio's technology stack will help you better customize and ext
 - **JavaScript**: Minimal JavaScript is used for interactive features like the dark mode toggle, search functionality, and dynamic content rendering.
 - **MathJax**: For rendering mathematical equations in LaTeX format on your pages and blog posts.
 - **Mermaid**: For creating diagrams (flowcharts, sequence diagrams, etc.) directly in Markdown.
-- **Font Awesome, Academicons, and Scholar Icons**: Icon libraries used throughout the theme for visual elements.
+- **Icon libraries (via `al_icons` + Lucide)**: Lucide UI icons, Academicons, and Scholar Icons used throughout the theme for visual elements.
 
 ### Backend
 
@@ -646,7 +646,7 @@ Custom fields (any field name you create) remain as **strings** and require expl
      {% assign page_adaptations = page.adaptations | split: ' ' %}
      {% for adaptation in page_adaptations %}
        <a href="{{ adaptation | slugify | prepend: '/books/adaptation/' | relative_url }}">
-         <i class="fa-solid fa-film fa-sm"></i> {{ adaptation }}
+         <i data-lucide="clapperboard" class="icon-sm" aria-hidden="true"></i> {{ adaptation }}
        </a>
      {% endfor %}
    {% endif %}
@@ -845,8 +845,8 @@ Social media information is managed through the [`jekyll-socials` plugin](https:
 
 The template supports icons from:
 
+- [Lucide](https://lucide.dev/) (site UI icons)
 - [Academicons](https://jpswalsh.github.io/academicons/)
-- [Font Awesome](https://fontawesome.com/)
 - [Scholar Icons](https://louisfacun.github.io/scholar-icons/)
 
 In `v1.x`, icon runtime ownership is provided by the `al_icons` plugin. Icon files are loaded from pinned CDN URLs via `third_party_libraries` in `_config.yml` (not from starter-local `assets/fonts` or `assets/webfonts` copies).

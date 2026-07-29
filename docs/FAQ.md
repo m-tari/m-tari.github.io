@@ -242,10 +242,7 @@ In `v1.x`, icon runtime ownership is provided by `al_icons`, and icons are loade
 Update flow:
 
 1. Confirm `al_icons` is enabled in `plugins`.
-2. Update version values in `_config.yml`:
-   - `third_party_libraries.fontawesome.version`
-   - `third_party_libraries.academicons.version`
-   - `third_party_libraries.scholar-icons.version`
+2. Update version values in `_config.yml` for each icon package under `third_party_libraries` (Lucide, Academicons, Scholar Icons).
 3. Update corresponding `integrity.css` hashes.
 4. Rebuild your site and verify icon rendering on pages with socials/publications.
 

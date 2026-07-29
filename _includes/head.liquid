@@ -48,6 +48,15 @@
 {% if site.plugins contains 'al_icons' %}
   {% include plugins/al_icons_styles.liquid %}
 {% endif %}
+{% if site.third_party_libraries.lucide %}
+  <script
+    defer
+    src="{{ site.third_party_libraries.lucide.url.js }}"
+    integrity="{{ site.third_party_libraries.lucide.integrity.js }}"
+    crossorigin="anonymous"
+  ></script>
+  <script defer src="{{ '/assets/js/lucide-init.js' | relative_url | bust_file_cache }}"></script>
+{% endif %}
 <link
   defer
   rel="stylesheet"

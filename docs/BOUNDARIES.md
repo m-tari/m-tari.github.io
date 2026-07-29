@@ -8,7 +8,7 @@
 - `al_folio_core`: shared layouts/includes/runtime primitives and upgrade contracts.
 - `al_folio_distill`: Distill templates/runtime assets.
 - `al_cookie`: cookie consent runtime assets and consent logic.
-- `al_icons`: icon runtime loading (Font Awesome, Academicons, Scholar Icons).
+- `al_icons`: icon runtime loading (Lucide UI icons, Academicons, Scholar Icons).
 - `al_search`: search runtime payload (`ninja-keys`, search setup/hotkey assets).
 - Other `al-*` gems: feature-specific assets, tags, filters, and runtime behavior.
 

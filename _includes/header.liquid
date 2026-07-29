@@ -114,7 +114,7 @@
             <!-- Search -->
             <li class="nav-item">
               <button id="search-toggle" type="button" title="Search" aria-label="Open search">
-                <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span>
+                <span class="nav-link">ctrl k <i data-lucide="search" aria-hidden="true"></i></span>
               </button>
             </li>
           {% endif %}
@@ -122,9 +122,9 @@
             <!-- Toogle theme mode -->
             <li class="toggle-container">
               <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme">
-                <i class="fa-half-sun-moon" id="light-toggle-system"></i>
-                <i class="fa-solid fa-moon" id="light-toggle-dark"></i>
-                <i class="fa-solid fa-sun" id="light-toggle-light"></i>
+                <i data-lucide="sun-moon" id="light-toggle-system" aria-hidden="true"></i>
+                <i data-lucide="moon" id="light-toggle-dark" aria-hidden="true"></i>
+                <i data-lucide="sun" id="light-toggle-light" aria-hidden="true"></i>
               </button>
             </li>
           {% endif %}

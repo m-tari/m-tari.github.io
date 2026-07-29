@@ -1,21 +1,136 @@
 /* Site customizations (keeps gem head/layouts free of large inline style forks). */
 
-/* Blue theme instead of pink/purple */
+/* Blue theme instead of pink/purple; body color closer to Phrasel blog prose */
 :root {
   --global-theme-color: #0076df;
   --global-hover-color: #0076df;
   --global-code-bg-color: rgba(0, 118, 223, 0.05);
+  --global-text-color: #181c31;
 }
 
 html[data-theme="dark"] {
   --global-theme-color: #4da3ff;
   --global-hover-color: #4da3ff;
+  --global-text-color: #e4e5ef;
 }
 
-/* Inter instead of Roboto */
+/*
+ * Body typography aligned with Phrasel article prose:
+ * Inter regular (not theme light-300), open leading, roomy paragraph gaps.
+ */
 html,
 body {
   font-family: Inter, system-ui, -apple-system, sans-serif !important;
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  line-height: 1.75 !important;
+  color: var(--global-text-color);
+}
+
+/* Content only — do not target navbar/footer lists */
+article p,
+article li,
+.post p,
+.post li {
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+article p,
+.post p {
+  margin-bottom: 1.5rem;
+}
+
+article ul,
+article ol,
+.post ul,
+.post ol {
+  margin-bottom: 1.5rem;
+}
+
+article li + li,
+.post li + li {
+  margin-top: 1.25rem;
+}
+
+article h1,
+article h2,
+article h3,
+article h4,
+.post h1,
+.post h2,
+.post h3,
+.post h4 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+article h2,
+.post h2,
+article h3,
+.post h3 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Lucide icons */
+.lucide-icon,
+svg.lucide {
+  width: 1em;
+  height: 1em;
+  stroke: currentColor;
+  fill: none;
+  vertical-align: middle;
+}
+
+.icon-sm,
+.icon-sm.lucide-icon,
+svg.lucide.icon-sm {
+  width: 0.875em;
+  height: 0.875em;
+}
+
+/* Keep calendar/hash/tag icons level with post tag text */
+.post-tags a .lucide-icon,
+.post-tags a svg.lucide,
+.post-tags a .icon-sm {
+  display: inline-block;
+  width: 0.875em;
+  height: 0.875em;
+  vertical-align: -0.05em;
+  position: relative;
+  top: -0.05em;
+}
+
+#light-toggle .lucide-icon,
+#light-toggle svg.lucide {
+  width: 1rem;
+  height: 1rem;
+  vertical-align: middle;
+}
+
+/* Keep theme show/hide rules working after Lucide replaces <i> with <svg> */
+#light-toggle svg.lucide {
+  display: none;
+}
+
+html:not([data-theme-setting="dark"]):not([data-theme-setting="light"]) #light-toggle-system,
+html[data-theme-setting="dark"] #light-toggle-dark,
+html[data-theme-setting="light"] #light-toggle-light {
+  display: inline-block;
+}
+
+/* FA used a 4px nudge; Lucide SVGs don't need it — center in the nav row instead */
+.navbar-nav .toggle-container {
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 576px) {
+  #light-toggle {
+    transform: none !important;
+  }
 }
 
 /* Smaller social icons (theme default is 4rem) */
@@ -25,7 +140,7 @@ body {
 
 .social .contact-icons a i,
 .social .contact-icons a svg,
-.social .contact-icons .svg-inline--fa {
+.social .contact-icons .lucide-icon {
   font-size: 1.25rem !important;
   width: 1.25rem !important;
   height: 1.25rem !important;

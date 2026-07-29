@@ -66,13 +66,13 @@ pagination:
       </p>
       <p class="post-tags">
         <a href="{{ year | prepend: '/writing/' | relative_url }}">
-          <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
+          <i data-lucide="calendar" class="icon-sm" aria-hidden="true"></i> {{ year }} </a>
 
           {% if tags != "" %}
           &nbsp; &middot; &nbsp;
             {% for tag in post.tags %}
             <a href="{{ tag | slugify | prepend: '/writing/tag/' | relative_url }}">
-              <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
+              <i data-lucide="hash" class="icon-sm" aria-hidden="true"></i> {{ tag }}</a>
               {% unless forloop.last %}
                 &nbsp;
               {% endunless %}
@@ -83,7 +83,7 @@ pagination:
           &nbsp; &middot; &nbsp;
             {% for category in post.categories %}
             <a href="{{ category | slugify | prepend: '/writing/category/' | relative_url }}">
-              <i class="fa-solid fa-tag fa-sm"></i> {{ category }}</a>
+              <i data-lucide="tag" class="icon-sm" aria-hidden="true"></i> {{ category }}</a>
               {% unless forloop.last %}
                 &nbsp;
               {% endunless %}

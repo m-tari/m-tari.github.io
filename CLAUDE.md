@@ -23,7 +23,7 @@ The `al-*` / `al_folio_*` gems are developed as **sibling repos on disk** at `~/
 | search assets             | `al_search_assets`                                  | `al_search` (Cmd-K ninja-keys palette; index built at build time from content) |
 | comments                  | `al_comments`                                       | `al_comments` (Giscus + Disqus, front-matter gated)                            |
 | cookie banner             | `al_cookie_styles` / `al_cookie_scripts`            | `al_cookie` (consent-mode gating of analytics)                                 |
-| icon `<link>`s            | `al_icons_styles`                                   | `al_icons` (FontAwesome/Academicons/Scholar Icons from CDN)                    |
+| icon `<link>`s            | `al_icons_styles`                                   | `al_icons` (Academicons / Scholar Icons from CDN; Lucide loaded site-locally)  |
 | analytics                 | `al_analytics_scripts`                              | `al_analytics` (GA/Cronitor/Pirsch/OpenPanel)                                  |
 | math                      | `al_math_styles` / `al_math_scripts`                | `al_math` (MathJax, pseudocode.js, TikZJax)                                    |
 | charts                    | `al_charts_scripts`                                 | `al_charts` (Mermaid/Chart.js/ECharts/Plotly/Vega/Leaflet/diff2html)           |

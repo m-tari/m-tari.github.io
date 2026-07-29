@@ -80,7 +80,7 @@
   status: bundled
   demo_path: /about/
   maintainer_contact: https://github.com/al-org-dev
-  notes: Icon runtime loading (Font Awesome, Academicons, Scholar Icons).
+  notes: Icon runtime loading (Lucide UI icons, Academicons, Scholar Icons). Site uses Lucide instead of the default UI icon CDN.
 
 - name: al_cookie
   repo_url: https://github.com/al-org-dev/al-cookie
