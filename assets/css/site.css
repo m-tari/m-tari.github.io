@@ -309,11 +309,8 @@ article .clearfix > h3 {
   margin: 0;
   align-self: start;
   min-height: 1px;
-}
-
-.project-media--empty {
-  /* Reserves the left column when a project has no image */
-  width: 100%;
+  /* Nudge down to optically match title text (glyphs sit below the line box) */
+  padding-top: 0.45rem;
 }
 
 .project-media img {
@@ -377,10 +374,6 @@ article .clearfix > h3 {
 
   .project-media--triangle {
     max-width: 9.5rem;
-  }
-
-  .project-media--empty {
-    display: none;
   }
 }
 
