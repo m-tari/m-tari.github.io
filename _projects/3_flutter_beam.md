@@ -9,4 +9,4 @@ imgs:
 redirect: https://publications.polymtl.ca/5256/
 ---
 
-[Navier–Stokes existence and smoothness](https://en.wikipedia.org/wiki/Millennium_Prize_Problems) is one of the Millennium Prize Problems with a US$1 million prize! Although I did not try to solve this problem (and probably you shouldn't), I wrote a computational fluid dynamics code to simulate the nonlinear reconfiguration of a beam in the fluid flow. Some cool images and results are in my [thesis](https://publications.polymtl.ca/5256/).
+I developed computational fluid dynamics code to investigate the nonlinear reconfiguration of a beam subjected to fluid flow. Further details, images, and analysis are available in my [thesis](https://publications.polymtl.ca/5256/).
