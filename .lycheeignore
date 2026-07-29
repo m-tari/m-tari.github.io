@@ -3,6 +3,10 @@ https://www.linkedin.com/
 https://www.reddit.com/
 https://twitter.com/
 https://x.com/
+https://www.sciencedirect.com/
+
+# Unrendered Liquid in source pages (matched as percent-encoded file:// URLs)
+%7B%7B.*%7D%7D
 
 # Non-site / liquid-heavy docs (not published content)
 README.md

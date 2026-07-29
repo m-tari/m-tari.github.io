@@ -45,7 +45,7 @@ jobs:
         uses: lycheeverse/lychee-action@v2.0.2
         with:
           fail: true
-          # Source markdown/HTML; .lycheeignore handles flaky externals and liquid-heavy paths
+          # Source markdown; .lycheeignore skips unrendered Liquid and flaky externals
           args: >-
             --user-agent 'curl/7.54'
             --max-retries 3
