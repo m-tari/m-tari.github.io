@@ -227,6 +227,51 @@ html[data-theme="dark"] .navbar-brand.social .lucide-icon {
 }
 
 /*
+ * Profile photo: theme uses 100% width below 576px (too large).
+ * Centered ~half-width on small screens; floated and tighter on desktop.
+ */
+@media (max-width: 575.98px) {
+  .profile,
+  .profile.float-right,
+  .profile.float-left {
+    float: none !important;
+    width: 50% !important;
+    max-width: 10rem;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block;
+  }
+
+  .profile img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+@media (min-width: 576px) {
+  .profile {
+    width: 22% !important;
+    max-width: 9rem;
+    float: right !important;
+    margin-left: 1rem;
+    margin-right: 0;
+  }
+
+  .profile.float-left {
+    float: left !important;
+    margin-left: 0;
+    margin-right: 1rem;
+  }
+
+  .profile img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+/*
  * Body links: subtle underline so links stay findable in dense prose
  * (nav / news titles / social stay untouched).
  */
