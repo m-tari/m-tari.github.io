@@ -1,10 +1,8 @@
 ---
 layout: default
 ---
-{% assign year = page.date | date: '%Y' %}
 {% assign tags = page.tags | join: '' %}
-{% assign categories = page.categories | join: '' %}
-{% assign url_beginning = page.url | slice: 0, 6 %}
+{% assign url_beginning = page.url | slice: 0, 9 %}
 
 {% if page.external_source == blank %}
   {% assign read_time = page.content | number_of_words | divided_by: 180 | plus: 1 %}
@@ -30,17 +28,11 @@ layout: default
         &nbsp; &middot; &nbsp; {{ page.external_source }}
       {% endif %}
     </p>
-    <p class="post-tags">
-      {% if url_beginning == '/blog/' %}
-        <a href="{{ year | prepend: '/blog/' | relative_url }}"> <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
-      {% else %}
-        <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
-      {% endif %}
-      {% if tags != '' %}
-        &nbsp; &middot; &nbsp;
+    {% if tags != '' %}
+      <p class="post-tags">
         {% for tag in page.tags %}
-          {% if url_beginning == '/blog/' %}
-            <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}"> <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
+          {% if url_beginning == '/writing/' %}
+            <a href="{{ tag | slugify | prepend: '/writing/tag/' | relative_url }}"> <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
           {% else %}
             <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}
           {% endif %}
@@ -48,22 +40,8 @@ layout: default
             &nbsp;
           {% endunless %}
         {% endfor %}
-      {% endif %}
-
-      {% if categories != '' %}
-        &nbsp; &middot; &nbsp;
-        {% for category in page.categories %}
-          {% if url_beginning == '/blog/' %}
-            <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}"> <i class="fa-solid fa-tag fa-sm"></i> {{ category -}}</a>
-          {% else %}
-            <i class="fa-solid fa-tag fa-sm"></i> {{ category }}
-          {% endif %}
-          {% unless forloop.last %}
-            &nbsp;
-          {% endunless %}
-        {% endfor %}
-      {% endif %}
-    </p>
+      </p>
+    {% endif %}
   </header>
 
   <article class="post-content">

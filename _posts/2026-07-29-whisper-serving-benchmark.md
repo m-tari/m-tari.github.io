@@ -4,7 +4,6 @@ title: Benchmarking Whisper serving for Phrasel
 date: 2026-07-29 10:00:00-0400
 description: Comparing HF Transformers, faster-whisper, vLLM, SGLang, and TensorRT-LLM for concurrent speech transcription.
 tags: whisper, speech, benchmarking, vllm, tensorrt, phrasel
-categories: writing
 ---
 
 For [Phrasel](https://www.phrasel.com/), transcription is not a one-off script: learners speak, we need transcripts back quickly, and load is bursty. Running Whisper once on a GPU is easy. Serving it under concurrency, with predictable latency and acceptable quality, is a different problem.

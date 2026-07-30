@@ -4,7 +4,6 @@ title: Send scheduled messages from a bot to a channel in Microsoft Teams
 date: 2024-09-15 12:00:00-0400
 description: Using Celery and botframework-connector to post scheduled messages to Teams channels.
 tags: microsoft-teams, bots, celery, python
-categories: writing
 ---
 
 A common task I ran into while building a bot for Microsoft Teams was sending messages from the bot to a channel on a schedule. While the Python version of the [botbuilder repository](https://github.com/microsoft/BotBuilder-Samples) provides several great examples such as [Starting a new thread in a channel](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/bot-initiate-thread-in-channel/python), I found that I needed a few extra steps to adapt those samples to my use case.

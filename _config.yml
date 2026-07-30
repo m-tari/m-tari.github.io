@@ -305,11 +305,10 @@ terser:
 
 jekyll-archives:
   posts:
-    enabled: [year, tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
+    enabled: [year, tags] # enables year and tag archives (remove if you need to disable one of them).
     permalinks:
       year: "/writing/:year/"
       tags: "/writing/:type/:name/"
-      categories: "/writing/:type/:name/"
 
 display_tags: []
 display_categories: []
