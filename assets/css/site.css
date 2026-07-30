@@ -88,9 +88,22 @@ svg.lucide {
   vertical-align: middle;
 }
 
-/* Drop tag/category chrome; keep title + description + date/read time */
+/* Keep calendar/hash/tag icons level with post tag text */
+.post-tags a .lucide-icon,
+.post-tags a svg.lucide {
+  display: inline-block;
+  width: 0.875em;
+  height: 0.875em;
+  vertical-align: -0.05em;
+  position: relative;
+  top: -0.05em;
+}
+
 .post-tags {
-  display: none !important;
+  color: var(--global-text-color-light);
+  font-size: 0.8125rem;
+  margin-top: 0.35rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Quieter post meta (writing index + post headers) */
@@ -120,7 +133,7 @@ svg.lucide {
 
 .post-header .post-meta {
   margin-top: 0.85rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
 
 #light-toggle .lucide-icon,
