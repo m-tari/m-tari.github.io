@@ -32,7 +32,7 @@ layout: default
       <p class="post-tags">
         {% for tag in page.tags %}
           {% if url_beginning == '/writing/' %}
-            <a href="{{ tag | slugify | prepend: '/writing/tag/' | relative_url }}"> <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
+            <a href="{{ tag | slugify: 'default' | prepend: '/writing/tag/' | relative_url }}"> <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
           {% else %}
             <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}
           {% endif %}

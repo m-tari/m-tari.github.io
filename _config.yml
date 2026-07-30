@@ -120,7 +120,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 
 blog_name: # blog_name will be displayed in your blog page
 blog_description:
-permalink: /writing/:year/:title/
+permalink: /writing/:year/:slug/
 lsi: false # produce an index for related posts
 
 # Pagination
@@ -175,8 +175,10 @@ collections:
     defaults:
       layout: post
     output: true
+    permalink: /news/:name/
   projects:
     output: true
+    permalink: /projects/:name/
 
 # -----------------------------------------------------------------------------
 # Jekyll settings
