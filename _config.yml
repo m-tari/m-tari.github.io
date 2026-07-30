@@ -174,10 +174,12 @@ collections:
   news:
     defaults:
       layout: post
-    output: true
+    # Inline on about only; no individual /news/:name/ pages.
+    output: false
     permalink: /news/:name/
   projects:
-    output: true
+    # Rendered on /projects/ listing only; no individual /projects/:name/ pages.
+    output: false
     permalink: /projects/:name/
 
 # -----------------------------------------------------------------------------
@@ -307,7 +309,7 @@ terser:
 
 jekyll-archives:
   posts:
-    enabled: [year, tags] # enables year and tag archives (remove if you need to disable one of them).
+    enabled: [tags]
     permalinks:
       year: "/writing/:year/"
       tags: "/writing/:type/:name/"

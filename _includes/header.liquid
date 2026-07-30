@@ -95,8 +95,9 @@
                 <li class="nav-item {% if page.url contains parent_link %}active{% endif %}">
                   {%- if p.permalink contains '://' -%}
                     {%- assign url = p.permalink -%}
-                  {%- elsif p.permalink contains '/blog/' -%}
-                    {%- assign url = '/blog/' -%}
+                  {%- elsif p.permalink -%}
+                    {%- comment -%} Prefer permalink so paginated pages (e.g. writing) don't link to .../index.html. {%- endcomment -%}
+                    {%- assign url = p.permalink | remove: 'index.html' -%}
                   {%- else -%}
                     {%- assign url = p.url -%}
                   {%- endif %}
