@@ -6,7 +6,7 @@ description: Using Celery and botframework-connector to post scheduled messages 
 tags: microsoft-teams, bots, celery, python
 ---
 
-A common task I ran into while building a bot for Microsoft Teams was sending messages from the bot to a channel on a schedule. While the Python version of the [botbuilder repository](https://github.com/microsoft/BotBuilder-Samples) provides several great examples such as [Starting a new thread in a channel](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/bot-initiate-thread-in-channel/python), I found that I needed a few extra steps to adapt those samples to my use case.
+A common task I ran into while building a bot for Microsoft Teams was sending messages from the bot to a channel on a schedule. While the Python version of the [botbuilder repository](https://github.com/microsoft/BotBuilder-Samples) provides several great examples such as [Starting a new thread in a channel](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/TeamsSDK/Archived/bot-initiate-thread-in-channel/python), I found that I needed a few extra steps to adapt those samples to my use case.
 
 One important difference is that most examples rely on the `on_message_activity` trigger, which works well for user-driven interactions. In my case, however, I needed something that runs independently of incoming messages.
 
