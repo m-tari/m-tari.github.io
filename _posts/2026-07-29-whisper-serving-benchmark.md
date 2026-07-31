@@ -45,14 +45,34 @@ In-process baselines stay around **30× realtime** no matter how many clients wa
 
 Quality is mostly aligned: HF, vLLM, and SGLang sit near **2.1% WER**, faster-whisper near **2.3%**. TensorRT-LLM is faster but lands around **5.2% WER** on this engine, likely due to different configuration settings.
 
+## Why throughput plateaus
+
+The interesting systems question is not only which stack is fastest at concurrency 8, but **why scaling slows from c8 to c32**.
+
+A follow-up telemetry sweep on the same GPU (`nvidia-smi` during timed passes, N=205, 3 passes) makes the answer clear. TensorRT-LLM throughput flattens (~347→331× realtime) while mean GPU util sits at **90–97%**. vLLM still gains some headroom c8→c32 (~278→306×) as util rises **82%→93%**. Serialized HF stays ~32× throughput and ~40% mean util at every concurrency.
+
+{% include figure.liquid path="assets/img/2026-07-29-whisper-serving-benchmark/gpu_util_vs_concurrency.png" class="img-fluid" zoomable=true alt="Throughput and mean GPU utilization versus concurrency for HF, vLLM, and TensorRT-LLM" %}
+
+Memory residency also separates the stacks: HF ~2.5–3 GiB, TensorRT-LLM ~12 GiB, vLLM ~44 GiB (high `gpu-memory-utilization`). Full table and methodology are in [open-speech-serve](https://github.com/m-tari/open-speech-serve/blob/main/docs/RESULTS.md).
+
+## What the GPU is doing
+
+The same samples plotted **vs time** at concurrency 8 show the duty-cycle contrast: HF stays in a mid-util band under serialization; vLLM runs dense, high occupancy for the length of the timed window.
+
+{% include figure.liquid path="assets/img/2026-07-29-whisper-serving-benchmark/gpu_util_vs_time_c8.png" class="img-fluid" zoomable=true alt="GPU util versus time at concurrency 8 for HF Transformers serialized and vLLM concurrent" %}
+
+This is host-level occupancy sampling. When combined with the util versus concurrency curves, the results are sufficient to conclude that c8 is close to the inflection point—the "knee"—of the capacity curve on this box for TensorRT-LLM. At the same time, vLLM still realizes some additional throughput up to c32.
+
 ## What I took away for Phrasel
 
 1. **Single-request RTF is not serving capacity.** A fast in-process Whisper call can still collapse under concurrent product traffic because it processes each request individually rather than batching them together.
 
 2. **vLLM and TensorRT-LLM both look like solid serving options.** On this box, vLLM reached ~250× realtime with WER matching the HF baseline, while TensorRT-LLM pushed higher throughput (~310×) with a higher WER on this engine/build. Both seem like good tools for the job.
 
-3. **SGLang’s Whisper support struggled with high concurrency in these tests.** It’s suitable for experimentation but currently not robust enough for demanding production workloads.
+3. **Don’t max out concurrency just because you can.** Once the GPU is already busy, adding more parallel requests barely improves throughput and mostly makes the slow requests slower. Pick a concurrency level near where throughput stops climbing — that is the useful setting in production.
 
-4. **Prioritize the metrics that reflect user experience.** While offline throughput is crucial for handling large-scale batch jobs efficiently, the time-to-final-speech (TTFS) is much more relevant for interactive speaking exercises, where users are waiting for feedback in real time. By benchmarking both, the choices that are grounded in how responsive and natural the experience will feel to your end users, not just raw processing speed.
+4. **SGLang’s Whisper support struggled with high concurrency in these tests.** It’s suitable for experimentation but currently not robust enough for demanding production workloads.
 
-The full matrix, methodology, and reproduction steps live in the [open-speech-serve](https://github.com/m-tari/open-speech-serve) repo. If you are choosing a Whisper backend for a product rather than a demo notebook, concurrent load and WER together are the comparison that matters.
+5. **Prioritize the metrics that reflect user experience.** Offline throughput matters for batch jobs; TTFS matters for interactive speaking exercises. Benchmark both so choices match how the product feels.
+
+The full matrix, methodology, and GPU telemetry reproduction steps live in the [open-speech-serve](https://github.com/m-tari/open-speech-serve) repo. If you are choosing a Whisper backend for a product rather than a demo notebook, concurrent load, quality, and device saturation together are the comparison that matters.
