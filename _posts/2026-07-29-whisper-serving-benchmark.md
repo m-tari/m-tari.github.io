@@ -75,4 +75,18 @@ This is host-level occupancy sampling. When combined with the util versus concur
 
 5. **Prioritize the metrics that reflect user experience.** Offline throughput matters for batch jobs; TTFS matters for interactive speaking exercises. Benchmark both so choices match how the product feels.
 
+## What I want to experiment next
+
+This writeup answers “which Whisper stack, and why does throughput stop scaling?” The natural follow-ups are the ones I’d run in a real serving engagement:
+
+1. **Explain the TensorRT-LLM quality gap.** Same model and audio, but ~5% WER vs ~2% elsewhere. Dig into decode settings and engine build flags until the gap is either closed or clearly a real accuracy/speed tradeoff.
+
+2. **Profile with Nsight Systems.** Move from `nvidia-smi` occupancy to CUDA timelines for HF vs vLLM vs TensorRT-LLM at the concurrency knee, to see where time goes (idle gaps, kernels, CPU overhead).
+
+3. **Tune the operating point.** Sweep max batch / in-flight caps and plot latency vs throughput curves to turn “run near where throughput stops climbing” into specific server settings.
+
+4. **Stretch the harness toward LLM serving.** Reuse the same loadgen and telemetry ideas on a small vLLM text model (TTFT, decode throughput, KV-cache pressure). I am curious how serving behavior compares when the workload is text decode rather than audio transcription.
+
+5. **Multi-GPU and scheduled clusters.** Run the same benchmark across multiple GPUs under Kubernetes or Slurm, and measure how throughput and latency scale when replicas or tensor-parallel shards share the load.
+
 The full matrix, methodology, and GPU telemetry reproduction steps live in the [open-speech-serve](https://github.com/m-tari/open-speech-serve) repo. If you are choosing a Whisper backend for a product rather than a demo notebook, concurrent load, quality, and device saturation together are the comparison that matters.
