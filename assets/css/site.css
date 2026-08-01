@@ -477,3 +477,8 @@ article :not(pre) > code,
   border: 0;
   background-color: var(--global-code-bg-color);
 }
+
+/* Readable markdown headers; scroll wide tables instead of wrapping th text */
+#markdown-content th {
+  white-space: nowrap;
+}

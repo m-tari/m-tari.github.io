@@ -33,13 +33,17 @@ On this hardware, concurrent throughput ranks:
 
 A few numbers that stood out:
 
-| framework | concurrency | throughput (× realtime) | e2e p95 (s) | WER |
+<div markdown="1">
+
+| framework | concurrency | throughput (× realtime) | p95 (s) | WER |
 | --- | ---: | ---: | ---: | ---: |
 | faster-whisper | 8 | 28.5 | 3.719 | 0.023 |
 | HF Transformers | 8 | 32.7 | 2.648 | 0.021 |
 | SGLang | 8 | 68.4 | 1.288 | 0.021 |
 | vLLM | 8 | 242.4 | 0.446 | 0.021 |
 | TensorRT-LLM | 8 | 310.7 | 0.335 | 0.052 |
+
+</div>
 
 In-process baselines stay around **30× realtime** no matter how many clients wait in line. Engineered servers climb into the **250-310×** range before saturating. SGLang at concurrency 32 is invalid on this sweep (the experimental Whisper path timed out and the server killed itself under load), so I treat c1/c8 as informative and discard c32.
 
