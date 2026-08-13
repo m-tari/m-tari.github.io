@@ -28,7 +28,7 @@ I build software and AI products. Right now I'm building [Phrasel](https://www.p
 
 <span class="timeline-date">2024 – Now</span> — Co-founder and technical lead at [Phrasel](https://www.phrasel.com/).
 
-<span class="timeline-date">2022 – 2024</span> — AI engineer at Aethos Labs, building machine learning solutions for sales: data preparation and NLP models for prospect engagement prediction, sentiment analysis, deduplication, and bot detection.
+<span class="timeline-date">2022 – 2024</span> — AI engineer at Aethos Labs, building machine learning solutions for sales and investment workflows: data preparation and NLP models for prospect engagement prediction, sentiment analysis, deduplication, and bot detection.
 
 <span class="timeline-date">2021 – 2022</span> — SharpestMinds mentorship: built an NLP application for researchers (summarization, classification of scientific articles, and title generation from abstracts).
 
