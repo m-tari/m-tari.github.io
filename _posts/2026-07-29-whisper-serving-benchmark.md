@@ -21,7 +21,7 @@ The frameworks fall into two groups:
 
 That distinction matters. Under serialization, end-to-end latency is mostly queue wait and throughput stays flat no matter how many clients pile up. With concurrent serving, client queue wait drops near zero and throughput scales until the GPU saturates.
 
-I also added a streaming path that measures **TTFS** (time from client end-of-speech to the final transcript) over a WebSocket. For interactive product flows, that number matters more than pure offline batch RTF.
+I also added a streaming path that measures **EOS-to-final latency** (time from client end-of-speech to the final transcript) over a WebSocket. For interactive product flows, that number matters more than pure offline batch RTF.
 
 ## Results
 
@@ -75,7 +75,7 @@ This is host-level occupancy sampling, not a CUDA timeline. Still, taken togethe
 
 4. **SGLang’s Whisper support struggled at high concurrency in these tests.** Fine for experimentation, but not yet robust enough for demanding production workloads.
 
-5. **Prioritize the metrics that reflect user experience.** Offline throughput matters for batch jobs; TTFS matters for interactive speaking exercises. Benchmark both so the choice matches how the product feels.
+5. **Prioritize the metrics that reflect user experience.** Offline throughput matters for batch jobs; EOS-to-final latency matters for interactive speaking exercises. Benchmark both so the choice matches how the product feels.
 
 ## What I want to experiment next
 
